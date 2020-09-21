@@ -21,7 +21,9 @@ for table in table_names:
 
     data = list(from_table.find({}))
     if len(data) == 0:
-        print(f"Please create table '{table}' manually!")
+        # Shitty workaround for pymongo not allowing you to create a collection without a document in it.
+        target_table.insert_one({})
+        target_table.delete_one({})
         continue
     target_table.insert_many(data)
 print("Done")
